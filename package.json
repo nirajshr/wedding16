@@ -1,0 +1,27 @@
+{
+  "name": "abinaniraj17",
+  "version": "1.0.0",
+  "description": "Abina and Niraj's Wedding website.",
+  "main": "client-app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devBuild": "browserify client-app.js > client/assets/js/app.js -d",
+    "build": "browserify client-app.js > client/assets/js/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nirajshr/wedding16.git"
+  },
+  "author": "Niraj Shrestha",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/nirajshr/wedding16/issues"
+  },
+  "homepage": "https://github.com/nirajshr/wedding16#readme",
+  "dependencies": {
+    "firebase": "^3.6.1"
+  },
+  "devDependencies": {
+    "browserify": "latest"
+  }
+}

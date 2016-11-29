@@ -1,3 +1,6 @@
+var firebase = require('firebase/app');
+require("firebase/database");
+
 var WEDDING_DATE = new Date("2017-02-23T02:15:00");
 
 function getDisplayStr(days, hours, minutes, seconds) {
@@ -47,13 +50,6 @@ function startCountdown(deadline, display) {
     }, 1000);
 }
 
-jQuery(function ($) {
-    console.log("Jquery ready code!")
-    $('weddingDateTxt').text(getDateStr(WEDDING_DATE));
-    startCountdown(WEDDING_DATE, $('#timeCountdownTxt'));
-
-    setupPageScrolls();
-});
 
 function setupPageScrolls() {
     //Check to see if the window is top if not then display button
@@ -81,6 +77,65 @@ function setupPageScrolls() {
             window.location.hash = href;
         });
         return false;
-    });
-    
+    });    
 }
+
+function setupGuestbookForm(saveCbk) {
+    $('#guestbookForm').on('submit', function () {
+        try {
+            var $form = $(this);
+            
+            if(postGuestbookMessage(
+                $("#contactName").val(),
+                $("#contactMessage").val(),
+                $("#contactEmail").val())) {
+                $form.find(':submit').each(function() {
+                    $button = $(this);
+                    label = $button.attr('after-submit-value');
+                    if (typeof label != 'undefined') {
+                        $button.text(label).prop('disabled', true);
+                    }
+                });
+            }
+        }
+        catch (e) {
+            console.log("exception caught:", e);
+        }
+
+        return false;
+    });
+}
+var config = {
+    apiKey: "AIzaSyB_eHmMLp1f4qiWD1ef8Npicrvoi-JNI5M",
+    authDomain: "abinaniraj.firebaseapp.com",
+    databaseURL: "https://abinaniraj.firebaseio.com",
+    //storageBucket: "abinaniraj.appspot.com",
+    //messagingSenderId: "745415908791"
+};
+var abinaniraj_svc = firebase.initializeApp(config);
+console.log("Firebase initialized with app name: ", abinaniraj_svc.name);
+
+function postGuestbookMessage(name, msg, email) {
+    if (name && msg) {
+        console.log("Saving guestbook with name: ", name, ", email: ", email, ", msg: ", msg);
+        var key = abinaniraj_svc.database().ref('messages_inbox').push().key;
+
+        abinaniraj_svc.database().ref('messages_inbox/' + key).set({
+            name: name,
+            email: email,
+            msg: msg
+        });
+    
+        return true;
+    }
+    return false;
+}
+
+jQuery(function ($) {
+    console.log("Jquery ready code!")
+    $('weddingDateTxt').text(getDateStr(WEDDING_DATE));
+    startCountdown(WEDDING_DATE, $('#timeCountdownTxt'));
+
+    setupPageScrolls();
+    setupGuestbookForm();
+});

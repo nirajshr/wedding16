@@ -71,8 +71,9 @@ function setupPageScrolls() {
     var $root = $('html, body');
     $('.anchorLink').click(function() {
         var href = $.attr(this, 'href');
+        var top = $(href).offset() ? $(href).offset().top : 0;
         $root.animate({
-            scrollTop: $(href).offset().top
+            scrollTop: top
         }, 500, function () {
             window.location.hash = href;
         });
@@ -131,11 +132,19 @@ function postGuestbookMessage(name, msg, email) {
     return false;
 }
 
+function autoHideNavBar() {
+    var $navbarc = jQuery('.navbar-collapse');
+    jQuery(".navbar a").on('click', function () {
+        $navbarc.collapse('hide');
+    });
+}
+
 jQuery(function ($) {
     console.log("Jquery ready code!")
     $('weddingDateTxt').text(getDateStr(WEDDING_DATE));
     startCountdown(WEDDING_DATE, $('#timeCountdownTxt'));
 
+    autoHideNavBar();
     setupPageScrolls();
     setupGuestbookForm();
 });

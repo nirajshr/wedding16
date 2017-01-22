@@ -1,4 +1,4 @@
-# Abina & Niraj Wedding websuite
+# Abina & Niraj Wedding website
 This website was created using HTML, CSS & JavaScript (client side).
 Bootstrap was used to create a responsive layout that works well across phone, tablet and PC.
 
